@@ -1,0 +1,17 @@
+.cell
+{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #000;
+}
+
+.cell_cross
+{
+    background: #707;
+}
+
+.cell_zero
+{
+    background: #777;
+}
