@@ -25,7 +25,7 @@ const handleClick = e => {
     const rowIndex = Array.from(document.querySelectorAll('.row')).indexOf(targetRow);
     const colIndex = Array.from(targetRow.children).indexOf(cell);
 
-    fetch(`/rest/cells/${rowIndex}/${colIndex}/click`, headers)
+    fetch(`/cells/${rowIndex}/${colIndex}/click`, headers)
 }
 
 const showPlayerNumber = number => {
@@ -47,7 +47,7 @@ const showWinner = winner => {
 }
 
 const actionReceiver = () => {
-    fetch('/rest/subscribe', headers)
+    fetch('/subscribe', headers)
         .then(response => {
             if (!response.ok) {
                 throw new Error();
@@ -77,6 +77,58 @@ const actionReceiver = () => {
 
 actionReceiver();
 
-document.querySelectorAll('.cell').forEach(cell => {
-    cell.addEventListener('click', handleClick);
-});
+const setClickListeners = () => {
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.addEventListener('click', handleClick);
+    });
+}
+
+const renderRow = rowData => {
+    const row = document.createElement('div');
+    row.classList.add('row');
+
+    rowData.forEach(cellData => {
+        const cell = document.createElement('div');
+        const classList = cell.classList;
+        classList.add('cell');
+
+        if (cellData === 0) {
+            classList.add('cell_cross');
+        } else if (cellData === 1) {
+            classList.add('cell_zero');
+        }
+
+        row.append(cell);
+    });
+
+    return row;
+}
+
+const renderTable = tableData => {
+    if (!tableData) {
+        return;
+    }
+
+    const table = document.createElement('div');
+    table.classList.add('table');
+
+    tableData.forEach(row => {
+        table.append(renderRow(row));
+    });
+
+    document.querySelector('.table').remove();
+
+    document.querySelector('body').append(table);
+
+    setClickListeners();
+}
+
+const getTable = () => {
+    fetch('/getTable', headers)
+        .then(response => response.json())
+        .then(data => {
+            renderTable(data.table);
+        });
+};
+
+getTable();

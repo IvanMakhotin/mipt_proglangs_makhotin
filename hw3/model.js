@@ -127,3 +127,7 @@ exports.hasPlayer = player => players.indexOf(player) !== -1;
 exports.subscribe = res => {
     subscribers.push(res);
 };
+
+exports.getTable = () => {
+    return table;
+}

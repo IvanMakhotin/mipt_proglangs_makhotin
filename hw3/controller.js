@@ -17,3 +17,7 @@ exports.subscribe = (req, res) => {
 exports.getPlayerNumber = (req, res) => {
     res.send({number: model.getPlayerNumber(req.session.player)});
 }
+
+exports.getTable = (req, res) => {
+	res.send({table: model.getTable()});
+}
